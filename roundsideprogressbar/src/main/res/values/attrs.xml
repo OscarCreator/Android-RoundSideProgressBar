@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundSideProgressBar">
+        <attr name="maxProgress" format="float"/>
+        <attr name="progress" format="float"/>
+
+        <attr name="outlineColor" format="color"/>
+        <attr name="progressColor" format="color"/>
+        <attr name="progressBackgroundColor" format="color"/>
+
+        <attr name="outlineWidth" format="dimension"/>
+
+        <attr name="orientation" format="enum">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+        
+    </declare-styleable>
+</resources>
