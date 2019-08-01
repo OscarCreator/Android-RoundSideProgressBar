@@ -117,7 +117,7 @@ public class RoundSideProgressBar extends View {
                 valueAnimator.addUpdateListener((valueAnimator) -> {
                     this.progress = (float) valueAnimator.getAnimatedValue();
                     this.invalidate();
-                    //TODO maybe invalidate only the updated bit
+
                 });
                 valueAnimator.setDuration(length)
                         .start();
