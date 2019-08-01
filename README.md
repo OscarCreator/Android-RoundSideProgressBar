@@ -17,7 +17,7 @@ allprojects {
 ```
 **Step 2.** Add the dependency
 ```
-implementation 'com.github.OscarCreator:Android-RoundSideProgressBar:1.0.0'
+implementation 'com.github.OscarCreator:Android-RoundSideProgressBar:0.1.0'
 ```
 
 ### Maven
@@ -35,6 +35,6 @@ implementation 'com.github.OscarCreator:Android-RoundSideProgressBar:1.0.0'
 	<dependency>
 	    <groupId>com.github.OscarCreator</groupId>
 	    <artifactId>Android-RoundSideProgressBar</artifactId>
-	    <version>Tag</version>
+	    <version>0.1.0</version>
 	</dependency>
 ```
