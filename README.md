@@ -3,3 +3,20 @@
 # Android-RoundSideProgressBar
 
 
+### Gradle
+```java
+dependencies {
+    ...
+    implementation 'com.oscarcreator:roundsideprogressbar:1.0.0'
+}
+```
+
+### Maven
+```xml
+<dependency>
+  <groupId>com.oscarcreator</groupId>
+  <artifactId>roundsideprogressbar</artifactId>
+  <version>1.0.0</version>
+  <type>pom</type>
+</dependency>
+```
