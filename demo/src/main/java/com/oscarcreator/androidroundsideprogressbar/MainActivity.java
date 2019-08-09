@@ -3,7 +3,7 @@ package com.oscarcreator.androidroundsideprogressbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.SeekBar;
 
 import com.oscarcreator.roundsideprogressbar.RoundSideProgressBar;
 
@@ -14,17 +14,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RoundSideProgressBar lProgressBar = findViewById(R.id.lpb);
-        Button btn = findViewById(R.id.btn);
-        EditText et = findViewById(R.id.et);
+        RoundSideProgressBar rspb = findViewById(R.id.lpb1);
+        SeekBar sb = findViewById(R.id.sb);
 
-
-
-        btn.setOnClickListener((v) -> {
-            int t =  Integer.valueOf(et.getText().toString());
-            lProgressBar.setProgress(t);
+        Button btn_10 = findViewById(R.id.btn_10);
+        btn_10.setOnClickListener((v) -> {
+            rspb.setProgress(10, true);
+            sb.setProgress(10);
+        });
+        Button btn_50 = findViewById(R.id.btn_50);
+        btn_50.setOnClickListener((v) -> {
+            rspb.setProgress(50, true);
+            sb.setProgress(50);
+        });
+        Button btn_90 = findViewById(R.id.btn_90);
+        btn_90.setOnClickListener((v) -> {
+            rspb.setProgress(90, true);
+            sb.setProgress(90);
         });
 
+
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                rspb.setProgress(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
     }
 }

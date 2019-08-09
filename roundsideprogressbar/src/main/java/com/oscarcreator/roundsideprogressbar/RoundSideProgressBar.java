@@ -36,7 +36,7 @@ public class RoundSideProgressBar extends View {
     protected static final int DEFAULT_MAX_PROGRESS = 100;
     protected static final int DEFAULT_PROGRESS = 0;
 
-    protected static final long DEFAULT_ANIMATION_SPEED = 200;
+    protected static final long DEFAULT_ANIMATION_SPEED = 1500;
 
     //Tag
     private static final String TAG = "LinearProgressBar";
@@ -81,11 +81,12 @@ public class RoundSideProgressBar extends View {
     /**
      * Set's the initial progress newProgress. This is only supposed to be used once on
      * start because it does NOT create the smooth newProgress animation as
-     * {@link RoundSideProgressBar#setProgress(float)} does.
+     * {@link RoundSideProgressBar#setProgress(float)} does. But it could also be
+     * used for setting progress instantly based on input
      *
-     * @param newProgress the initial newProgress of the progressbar
+     * @param newProgress the instantly new progress of the progressbar
      * */
-    public void setInitialProgress(float newProgress){
+    public void setProgress(float newProgress){
         if (this.progress != newProgress) {
             this.progress = newProgress;
             this.invalidate();
@@ -94,35 +95,42 @@ public class RoundSideProgressBar extends View {
     }
 
     /**
-     * Set's the progress newProgress with a {@link ValueAnimator}. This will
-     * transition the current progress newProgress to passed in newProgress.
+     * Set's the progress newProgress with a {@link ValueAnimator} if animate is true.
+     * If animate is false the progress will be set instantly without any animation.
      *
-     * @param newProgress the progress newProgress to transition to.
+     * @param newProgress the new progress to transition to.
+     * @param animate true to animate from current to newProgress
      * */
-    public void setProgress(float newProgress){
-        if (newProgress >= 0 && newProgress <= this.maxProgress){
+    public void setProgress(float newProgress, boolean animate){
+        if (!animate){
+            setProgress(newProgress);
+        }else{
 
-            if (newProgress != getProgress()){
-                long length = (long)(Math.abs(newProgress - getProgress()) / getMaxProgress() * animationSpeed);
+            if (newProgress >= 0 && newProgress <= this.maxProgress){
 
-                if (valueAnimator != null){
-                    if (valueAnimator.isRunning()){
-                        valueAnimator.cancel();
+                if (newProgress != getProgress()){
+                    long length = (long)(Math.abs(newProgress - getProgress()) / getMaxProgress() * animationSpeed);
+
+                    if (valueAnimator != null){
+                        if (valueAnimator.isRunning()){
+                            valueAnimator.cancel();
+                        }
+                        valueAnimator.removeAllUpdateListeners();
+                        valueAnimator.setFloatValues(getProgress(), newProgress);
+                    }else{
+                        valueAnimator = ValueAnimator.ofFloat(getProgress(), newProgress);
                     }
-                    valueAnimator.removeAllUpdateListeners();
-                    valueAnimator.setFloatValues(getProgress(), newProgress);
-                }else{
-                    valueAnimator = ValueAnimator.ofFloat(getProgress(), newProgress);
-                }
-                valueAnimator.addUpdateListener((valueAnimator) -> {
-                    this.progress = (float) valueAnimator.getAnimatedValue();
-                    this.invalidate();
+                    valueAnimator.addUpdateListener((valueAnimator) -> {
+                        this.progress = (float) valueAnimator.getAnimatedValue();
+                        this.invalidate();
 
-                });
-                valueAnimator.setDuration(length)
-                        .start();
+                    });
+                    valueAnimator.setDuration(length)
+                            .start();
+                }
             }
         }
+
     }
 
     /**
@@ -277,12 +285,14 @@ public class RoundSideProgressBar extends View {
             maxProgress = typedArray.getFloat(R.styleable.RoundSideProgressBar_maxProgress,
                     DEFAULT_MAX_PROGRESS);
             if (maxProgress <= 0){
-                throw new IllegalArgumentException("maxProgress is not allowed to be negative or have a value of zero. value=" + maxProgress);
+                throw new IllegalArgumentException("maxProgress is not allowed to be negative or have a value of zero. " +
+                        "Current value: " + maxProgress);
             }
 
             progress = typedArray.getFloat(R.styleable.RoundSideProgressBar_progress, DEFAULT_PROGRESS);
             if (maxProgress < 0){
-                throw new IllegalArgumentException("progress is not allowed to have a negative value. value=" + progress);
+                throw new IllegalArgumentException("progress is not allowed to have a negative value. " +
+                        "Current value: " + progress);
             }
 
             progressColor = typedArray.getColor(R.styleable.RoundSideProgressBar_progressColor,
@@ -320,11 +330,10 @@ public class RoundSideProgressBar extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-
-        rectView.left = getPaddingLeft() + outlineWidth - 1;
-        rectView.top = getPaddingTop() + outlineWidth - 1;
-        rectView.bottom = viewHeight + getPaddingTop() + outlineWidth + 1;
-        rectView.right = viewWidth + getPaddingLeft() + outlineWidth + 1;
+        rectView.left = getPaddingLeft() + outlineWidth;
+        rectView.top = getPaddingTop() + outlineWidth;
+        rectView.bottom = viewHeight + getPaddingTop() + outlineWidth;
+        rectView.right = viewWidth + getPaddingLeft() + outlineWidth;
 
         float lengthProcent = Math.min(progress / maxProgress, 1f);
         float currentBarLength;
@@ -333,6 +342,8 @@ public class RoundSideProgressBar extends View {
 
             float paddedViewWidth = Math.max(rectView.right - rectView.left, 0);
             currentBarLength = lengthProcent * paddedViewWidth;
+
+
 
             //If padding fills the entire viewheight
             if (!(paddedViewWidth < 0 || rectView.bottom - rectView.top < 0)) {
@@ -354,16 +365,16 @@ public class RoundSideProgressBar extends View {
                 }
             }
 
-            if (outlineWidth >= 0) {
-                rectViewPadding.left = getPaddingLeft() + outlineWidth * 0.5f;
-                rectViewPadding.top = getPaddingTop() + outlineWidth * 0.5f;
-                rectViewPadding.bottom = viewHeight + getPaddingTop() + outlineWidth * 1.5f;
-                rectViewPadding.right = viewWidth + getPaddingLeft() + outlineWidth * 1.5f;
+            if (outlineWidth > 0.01) {
+                rectViewPadding.left = getPaddingLeft() + outlineWidth * 0.55f;
+                rectViewPadding.top = getPaddingTop() + outlineWidth * 0.55f;
+                rectViewPadding.bottom = viewHeight + getPaddingTop() + outlineWidth * 1.45f;
+                rectViewPadding.right = viewWidth + getPaddingLeft() + outlineWidth * 1.45f;
 
                 if (!(rectViewPadding.right - rectViewPadding.left < 0
                         || rectViewPadding.bottom - rectViewPadding.top < 0)){
 
-                    outlinePaint.setStrokeWidth(outlineWidth);
+                    outlinePaint.setStrokeWidth(outlineWidth * 1.05f);
                     Path p = composeRoundedRect(rectViewPadding, CONSTANT_HORIZONTAL);
                     canvas.drawPath(p, outlinePaint);
                 }
@@ -395,15 +406,15 @@ public class RoundSideProgressBar extends View {
             }
 
             //Drawing outline
-            if (outlineWidth >= 0) {
-                rectViewPadding.left = getPaddingLeft() + outlineWidth * 0.505f;
-                rectViewPadding.top = getPaddingTop() + outlineWidth * 0.505f;
-                rectViewPadding.bottom = viewHeight + getPaddingTop() + outlineWidth * 1.495f;
-                rectViewPadding.right = viewWidth + getPaddingLeft() + outlineWidth * 1.495f;
+            if (outlineWidth > 0.01) {
+                rectViewPadding.left = getPaddingLeft() + outlineWidth * 0.55f;
+                rectViewPadding.top = getPaddingTop() + outlineWidth * 0.55f;
+                rectViewPadding.bottom = viewHeight + getPaddingTop() + outlineWidth * 1.45f;
+                rectViewPadding.right = viewWidth + getPaddingLeft() + outlineWidth * 1.45f;
 
                 if (!(rectViewPadding.right - rectViewPadding.left < 0
                         || rectViewPadding.bottom - rectViewPadding.top < 0)){
-                    outlinePaint.setStrokeWidth(outlineWidth);
+                    outlinePaint.setStrokeWidth(outlineWidth * 1.05f);
                     Path p = composeRoundedRect(rectViewPadding, CONSTANT_VERTICAL);
                     canvas.drawPath(p, outlinePaint);
                 }
