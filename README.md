@@ -23,4 +23,4 @@ dependencies {
 ![RoundSideProgressBar][3]
 
 
-[3]: https://raw.githubusercontent.com/OscarCreator/Android-RoundSideProgressBar/master/art/RoundSideProgressBar_Demo.gif
+[3]: https://raw.githubusercontent.com/OscarCreator/Android-RoundSideProgressBar/master/art/RoundSideProgressBar.gif
