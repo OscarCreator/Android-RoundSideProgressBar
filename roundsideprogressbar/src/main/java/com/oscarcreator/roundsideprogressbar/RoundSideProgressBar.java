@@ -80,8 +80,8 @@ public class RoundSideProgressBar extends View {
 
     /**
      * Set's the initial progress newProgress. This is only supposed to be used once on
-     * start because it does NOT create the smooth newProgress animation as
-     * {@link RoundSideProgressBar#setProgress(float)} does. But it could also be
+     * start because it does NOT create the smooth animation as
+     * {@link RoundSideProgressBar#setProgress(float, boolean)} does. But it could also be
      * used for setting progress instantly based on input
      *
      * @param newProgress the instantly new progress of the progressbar
@@ -142,7 +142,6 @@ public class RoundSideProgressBar extends View {
         return progress;
 
     }
-
 
     /**
      * Set's the maxProgress newMaxProgress. Note that this will also
@@ -212,10 +211,10 @@ public class RoundSideProgressBar extends View {
     }
 
     /**
-     * Set's the current progressColor. Note that this will also
-     * update the progressbar.
+     * Set's the current progress color. Note that this will also
+     * update the progressbar with the new colors immediately.
      *
-     * @param newProgressColor new progressColor
+     * @param newProgressColor the new progress color
      * */
     public void setProgressColor(int newProgressColor){
         if (getProgressColor() != newProgressColor){
@@ -234,42 +233,80 @@ public class RoundSideProgressBar extends View {
         return this.progressColor;
     }
 
-
+    /**
+     * Set's the current progress background color. Note that this will also
+     * update the progressbar with the new colors immediately
+     *
+     * @param newProgressBackgroundColor the new progress background color
+     * */
     public void setProgressBackgroundColor(int newProgressBackgroundColor){
-
+        if (getProgressBackgroundColor() != newProgressBackgroundColor){
+            this.progressBackgroundColor = newProgressBackgroundColor;
+            progressBackgroundPaint.setColor(getProgressBackgroundColor());
+            this.invalidate();
+        }
     }
 
+    /**
+     * Returns the current progress background color
+     *
+     * @return current progress background color
+     * */
     public int getProgressBackgroundColor(){
         return this.progressBackgroundColor;
     }
 
-
+    /**
+     * Set's the orientation of the progressbar.
+     * Note use the {@link #CONSTANT_HORIZONTAL} or {@link #CONSTANT_VERTICAL}
+     * when setting the orientation.
+     *
+     * @param newOrientation the new orientation
+     * */
     public void setOrientation(int newOrientation){
+        if (this.orientation != newOrientation &&
+                (newOrientation == CONSTANT_HORIZONTAL | newOrientation == CONSTANT_VERTICAL)){
+            this.orientation = newOrientation;
+            this.invalidate();
 
+        }
     }
 
-
+    /**
+     * Returns the current orientation of the progressbar.
+     * 0 is horizontal and 1 is vertical as the
+     * {@link #CONSTANT_HORIZONTAL} and {@link #CONSTANT_VERTICAL} is.
+     *
+     * @return current orientation
+     * */
     public int getOrientation(){
         return this.orientation;
     }
 
 
     /**
-     * Time for the animation from 0% to 100% progress
+     * The time from 0% to 100% of the progressbar in milliseconds.
+     * Default value is {@link #DEFAULT_ANIMATION_SPEED}
+     *
+     * @param millis the new animation speed
      * */
     public void setAnimationSpeed(long millis){
         animationSpeed = millis;
     }
 
     /**
-     * Restore to default
+     * Restore to default animation speed which is {@link #DEFAULT_ANIMATION_SPEED}.
+     * The time is in milliseconds and is the time from 0% to 100%
      * */
     public void restoreAnimationSpeed(){
         this.animationSpeed = DEFAULT_ANIMATION_SPEED;
     }
 
     /**
+     * Returns the current animation speed. The speed
+     * is the time it takes from 0% to 100% in milliseconds.
      *
+     * @return the current animation speed
      * */
     public long getAnimationSpeed(){
         return animationSpeed;
