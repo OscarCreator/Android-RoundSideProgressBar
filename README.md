@@ -20,6 +20,9 @@ dependencies {
   <type>pom</type>
 </dependency>
 ```
+
+Demo of how the progressbar works
+
 ![RoundSideProgressBar][3]
 
 
