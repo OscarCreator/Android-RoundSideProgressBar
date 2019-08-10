@@ -20,3 +20,7 @@ dependencies {
   <type>pom</type>
 </dependency>
 ```
+![RoundSideProgressBar][3]
+
+
+[3]: https://raw.githubusercontent.com/OscarCreator/Android-RoundSideProgressBar/master/art/RoundSideProgressBar_Demo.gif
