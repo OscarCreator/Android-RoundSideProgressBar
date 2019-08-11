@@ -38,16 +38,22 @@ public class RoundSideProgressBar extends View {
 
     protected static final long DEFAULT_ANIMATION_SPEED = 1500;
 
+    //Full width and height of the view
+    protected int fullWidth, fullHeight;
+
+    //The width and height of the progressbar
+    protected float viewWidth, viewHeight;
+
+    //Paints
+    protected Paint outlinePaint, progressPaint, progressBackgroundPaint;
+
+    protected RectF rectView, rectViewPadding;
+
     //Tag
     private static final String TAG = "LinearProgressBar";
 
     private float maxProgress, progress;
 
-    //Full width and height of the view
-    private int fullWidth, fullHeight;
-
-    //The width and height of the progressbar
-    private float viewWidth, viewHeight;
 
     private int orientation;
 
@@ -57,9 +63,6 @@ public class RoundSideProgressBar extends View {
     private float outlineWidth;
 
     private int progressColor, outlineColor, progressBackgroundColor;
-    private Paint outlinePaint, progressPaint, progressBackgroundPaint;
-
-    private RectF rectView, rectViewPadding;
 
     private ValueAnimator valueAnimator;
 
@@ -313,56 +316,6 @@ public class RoundSideProgressBar extends View {
     }
 
 
-    private void init(Context context, AttributeSet attrs) {
-
-        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs,
-                R.styleable.RoundSideProgressBar, 0, 0);
-
-        try {
-            maxProgress = typedArray.getFloat(R.styleable.RoundSideProgressBar_maxProgress,
-                    DEFAULT_MAX_PROGRESS);
-            if (maxProgress <= 0){
-                throw new IllegalArgumentException("maxProgress is not allowed to be negative or have a value of zero. " +
-                        "Current value: " + maxProgress);
-            }
-
-            progress = typedArray.getFloat(R.styleable.RoundSideProgressBar_progress, DEFAULT_PROGRESS);
-            if (maxProgress < 0){
-                throw new IllegalArgumentException("progress is not allowed to have a negative value. " +
-                        "Current value: " + progress);
-            }
-
-            progressColor = typedArray.getColor(R.styleable.RoundSideProgressBar_progressColor,
-                    ContextCompat.getColor(context, DEFAULT_PROGRESS_COLOR_ID));
-            outlineColor = typedArray.getColor(R.styleable.RoundSideProgressBar_outlineColor,
-                    ContextCompat.getColor(context, DEFAULT_BACKGROUND_COLOR_ID));
-            progressBackgroundColor = typedArray.getColor(R.styleable.RoundSideProgressBar_progressBackgroundColor,
-                    ContextCompat.getColor(context, DEFAULT_PROGRESS_BACKGROUND_COLOR_ID));
-
-            outlineWidth = typedArray.getDimension(R.styleable.RoundSideProgressBar_outlineWidth, DEFAULT_PADDING);
-
-            orientation = typedArray.getInt(R.styleable.RoundSideProgressBar_orientation, CONSTANT_HORIZONTAL);
-
-        } finally {
-            typedArray.recycle();
-        }
-
-
-        outlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        outlinePaint.setColor(outlineColor);
-        outlinePaint.setStyle(Paint.Style.STROKE);
-
-        progressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        progressPaint.setColor(progressColor);
-
-        progressBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        progressBackgroundPaint.setColor(progressBackgroundColor);
-
-        rectView = new RectF(0, 0, viewWidth, viewHeight);
-        rectViewPadding = new RectF(0, 0, 0, 0);
-    }
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -418,7 +371,7 @@ public class RoundSideProgressBar extends View {
 
 
 
-        //Orientation vertical
+            //Orientation vertical
         } else {
             float paddedViewHeight = Math.max(rectView.bottom - rectView.top, 0f);
             currentBarLength = lengthProcent * paddedViewHeight;
@@ -462,7 +415,119 @@ public class RoundSideProgressBar extends View {
         }
     }
 
-    private Path composeRoundedRect(RectF rect, int orientation) {
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        //Must be this size
+        if (widthMode == MeasureSpec.EXACTLY) {
+            fullWidth = widthSize;
+            viewWidth = (fullWidth - getPaddingLeft() - getPaddingRight() - outlineWidth * 2);
+
+            //Can't be bigger than...
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            //Just used good display for the user when using default values
+            if (orientation == CONSTANT_HORIZONTAL){
+                fullWidth = (int) (Math.min(DEFAULT_WIDTH + getPaddingLeft() + getPaddingRight() + outlineWidth * 2, widthSize));
+            }else{
+                fullWidth = (int) (Math.min(DEFAULT_HEIGHT + getPaddingLeft() + getPaddingRight() + outlineWidth * 2, widthSize));
+            }
+
+            viewWidth = (fullWidth - getPaddingLeft() - getPaddingRight() - outlineWidth * 2);
+
+            //Be whatever you want
+        } else {
+            fullWidth = (int) (DEFAULT_WIDTH + getPaddingLeft() + getPaddingRight() + outlineWidth * 2);
+            viewWidth = DEFAULT_WIDTH;
+        }
+
+        //Must be this size
+        if (heightMode == MeasureSpec.EXACTLY) {
+            fullHeight = heightSize;
+            viewHeight = (fullHeight - getPaddingTop() - getPaddingBottom() - outlineWidth * 2);
+
+            //Can't be bigger than... ~wrap_content
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+
+            //Just used good display for the user when using default values
+            if (orientation == CONSTANT_HORIZONTAL){
+                fullHeight = (int) Math.min(DEFAULT_HEIGHT + outlineWidth * 2 + getPaddingTop() + getPaddingBottom(), heightSize);
+            }else{
+                fullHeight = (int) Math.min(DEFAULT_WIDTH + outlineWidth * 2 + getPaddingTop() + getPaddingBottom(), heightSize);
+            }
+            viewHeight = (fullHeight - outlineWidth * 2 - getPaddingTop() - getPaddingBottom());
+
+            //Be whatever you want
+        } else {
+            fullHeight = (int) (DEFAULT_HEIGHT + getPaddingTop() + getPaddingBottom() + outlineWidth * 2);
+            viewHeight = DEFAULT_HEIGHT;
+        }
+
+//        Log.i(TAG, "heightSize:" + heightSize + " widthSize:" + widthSize);
+//        Log.i(TAG, "heightmode:" + heightMode + " widthmode:" + widthMode);
+//
+//        Log.i("LinearProgressBar", "fullwidth: " + fullWidth + ", fullheight: " + fullHeight +
+//                " viewWidth:" + viewWidth + " viewHeight:" + viewHeight + " my padding:" + outlineWidth);
+
+        //Must call this
+        setMeasuredDimension(fullWidth, fullHeight);
+    }
+
+    protected void init(Context context, AttributeSet attrs) {
+
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs,
+                R.styleable.RoundSideProgressBar, 0, 0);
+
+        try {
+            maxProgress = typedArray.getFloat(R.styleable.RoundSideProgressBar_maxProgress,
+                    DEFAULT_MAX_PROGRESS);
+            if (maxProgress <= 0){
+                throw new IllegalArgumentException("maxProgress is not allowed to be negative or have a value of zero. " +
+                        "Current value: " + maxProgress);
+            }
+
+            progress = typedArray.getFloat(R.styleable.RoundSideProgressBar_progress, DEFAULT_PROGRESS);
+            if (maxProgress < 0){
+                throw new IllegalArgumentException("progress is not allowed to have a negative value. " +
+                        "Current value: " + progress);
+            }
+
+            progressColor = typedArray.getColor(R.styleable.RoundSideProgressBar_progressColor,
+                    ContextCompat.getColor(context, DEFAULT_PROGRESS_COLOR_ID));
+            outlineColor = typedArray.getColor(R.styleable.RoundSideProgressBar_outlineColor,
+                    ContextCompat.getColor(context, DEFAULT_BACKGROUND_COLOR_ID));
+            progressBackgroundColor = typedArray.getColor(R.styleable.RoundSideProgressBar_progressBackgroundColor,
+                    ContextCompat.getColor(context, DEFAULT_PROGRESS_BACKGROUND_COLOR_ID));
+
+            outlineWidth = typedArray.getDimension(R.styleable.RoundSideProgressBar_outlineWidth, DEFAULT_PADDING);
+
+            orientation = typedArray.getInt(R.styleable.RoundSideProgressBar_orientation, CONSTANT_HORIZONTAL);
+
+        } finally {
+            typedArray.recycle();
+        }
+
+
+        outlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        outlinePaint.setColor(outlineColor);
+        outlinePaint.setStyle(Paint.Style.STROKE);
+
+        progressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        progressPaint.setColor(progressColor);
+
+        progressBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        progressBackgroundPaint.setColor(progressBackgroundColor);
+
+        rectView = new RectF(0, 0, viewWidth, viewHeight);
+        rectViewPadding = new RectF(0, 0, 0, 0);
+    }
+
+
+    protected Path composeRoundedRect(RectF rect, int orientation) {
         Path p = new Path();
         float cornerRadius;
         if (orientation == CONSTANT_HORIZONTAL) {
@@ -485,68 +550,6 @@ public class RoundSideProgressBar extends View {
         return p;
     }
 
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        //Must be this size
-        if (widthMode == MeasureSpec.EXACTLY) {
-            fullWidth = widthSize;
-            viewWidth = (fullWidth - getPaddingLeft() - getPaddingRight() - outlineWidth * 2);
-
-        //Can't be bigger than...
-        } else if (widthMode == MeasureSpec.AT_MOST) {
-            //Just used good display for the user when using default values
-            if (orientation == CONSTANT_HORIZONTAL){
-                fullWidth = (int) (Math.min(DEFAULT_WIDTH + getPaddingLeft() + getPaddingRight() + outlineWidth * 2, widthSize));
-            }else{
-                fullWidth = (int) (Math.min(DEFAULT_HEIGHT + getPaddingLeft() + getPaddingRight() + outlineWidth * 2, widthSize));
-            }
-
-            viewWidth = (fullWidth - getPaddingLeft() - getPaddingRight() - outlineWidth * 2);
-
-        //Be whatever you want
-        } else {
-            fullWidth = (int) (DEFAULT_WIDTH + getPaddingLeft() + getPaddingRight() + outlineWidth * 2);
-            viewWidth = DEFAULT_WIDTH;
-        }
-
-        //Must be this size
-        if (heightMode == MeasureSpec.EXACTLY) {
-            fullHeight = heightSize;
-            viewHeight = (fullHeight - getPaddingTop() - getPaddingBottom() - outlineWidth * 2);
-
-        //Can't be bigger than... ~wrap_content
-        } else if (heightMode == MeasureSpec.AT_MOST) {
-
-            //Just used good display for the user when using default values
-            if (orientation == CONSTANT_HORIZONTAL){
-                fullHeight = (int) Math.min(DEFAULT_HEIGHT + outlineWidth * 2 + getPaddingTop() + getPaddingBottom(), heightSize);
-            }else{
-                fullHeight = (int) Math.min(DEFAULT_WIDTH + outlineWidth * 2 + getPaddingTop() + getPaddingBottom(), heightSize);
-            }
-            viewHeight = (fullHeight - outlineWidth * 2 - getPaddingTop() - getPaddingBottom());
-
-        //Be whatever you want
-        } else {
-            fullHeight = (int) (DEFAULT_HEIGHT + getPaddingTop() + getPaddingBottom() + outlineWidth * 2);
-            viewHeight = DEFAULT_HEIGHT;
-        }
-
-//        Log.i(TAG, "heightSize:" + heightSize + " widthSize:" + widthSize);
-//        Log.i(TAG, "heightmode:" + heightMode + " widthmode:" + widthMode);
-//
-//        Log.i("LinearProgressBar", "fullwidth: " + fullWidth + ", fullheight: " + fullHeight +
-//                " viewWidth:" + viewWidth + " viewHeight:" + viewHeight + " my padding:" + outlineWidth);
-
-        //Must call this
-        setMeasuredDimension(fullWidth, fullHeight);
-    }
 
 
 }
