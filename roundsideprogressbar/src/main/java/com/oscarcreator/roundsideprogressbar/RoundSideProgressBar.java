@@ -380,6 +380,20 @@ public class RoundSideProgressBar extends View {
             float paddedViewWidth = Math.max(rectView.right - rectView.left, 0);
             currentBarLength = lengthProcent * paddedViewWidth;
 
+            if (outlineWidth > 0.01) {
+                rectViewPadding.left = getPaddingLeft() + outlineWidth * 0.55f;
+                rectViewPadding.top = getPaddingTop() + outlineWidth * 0.55f;
+                rectViewPadding.bottom = viewHeight + getPaddingTop() + outlineWidth * 1.45f;
+                rectViewPadding.right = viewWidth + getPaddingLeft() + outlineWidth * 1.45f;
+
+                if (!(rectViewPadding.right - rectViewPadding.left < 0
+                        || rectViewPadding.bottom - rectViewPadding.top < 0)){
+
+                    outlinePaint.setStrokeWidth(outlineWidth * 1.05f);
+                    Path p = composeRoundedRect(rectViewPadding, CONSTANT_HORIZONTAL);
+                    canvas.drawPath(p, outlinePaint);
+                }
+            }
 
 
             //If padding fills the entire viewheight
@@ -402,6 +416,14 @@ public class RoundSideProgressBar extends View {
                 }
             }
 
+
+
+        //Orientation vertical
+        } else {
+            float paddedViewHeight = Math.max(rectView.bottom - rectView.top, 0f);
+            currentBarLength = lengthProcent * paddedViewHeight;
+
+            //Drawing outline
             if (outlineWidth > 0.01) {
                 rectViewPadding.left = getPaddingLeft() + outlineWidth * 0.55f;
                 rectViewPadding.top = getPaddingTop() + outlineWidth * 0.55f;
@@ -410,17 +432,11 @@ public class RoundSideProgressBar extends View {
 
                 if (!(rectViewPadding.right - rectViewPadding.left < 0
                         || rectViewPadding.bottom - rectViewPadding.top < 0)){
-
                     outlinePaint.setStrokeWidth(outlineWidth * 1.05f);
-                    Path p = composeRoundedRect(rectViewPadding, CONSTANT_HORIZONTAL);
+                    Path p = composeRoundedRect(rectViewPadding, CONSTANT_VERTICAL);
                     canvas.drawPath(p, outlinePaint);
                 }
             }
-
-        //Orientation vertical
-        } else {
-            float paddedViewHeight = Math.max(rectView.bottom - rectView.top, 0f);
-            currentBarLength = lengthProcent * paddedViewHeight;
 
             //If padding fills the entire viewHeight
             if (!(paddedViewHeight < 0 || rectView.right - rectView.left < 0)) {
@@ -442,20 +458,7 @@ public class RoundSideProgressBar extends View {
                 }
             }
 
-            //Drawing outline
-            if (outlineWidth > 0.01) {
-                rectViewPadding.left = getPaddingLeft() + outlineWidth * 0.55f;
-                rectViewPadding.top = getPaddingTop() + outlineWidth * 0.55f;
-                rectViewPadding.bottom = viewHeight + getPaddingTop() + outlineWidth * 1.45f;
-                rectViewPadding.right = viewWidth + getPaddingLeft() + outlineWidth * 1.45f;
 
-                if (!(rectViewPadding.right - rectViewPadding.left < 0
-                        || rectViewPadding.bottom - rectViewPadding.top < 0)){
-                    outlinePaint.setStrokeWidth(outlineWidth * 1.05f);
-                    Path p = composeRoundedRect(rectViewPadding, CONSTANT_VERTICAL);
-                    canvas.drawPath(p, outlinePaint);
-                }
-            }
         }
     }
 

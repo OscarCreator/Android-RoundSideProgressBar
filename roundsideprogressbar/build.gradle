@@ -5,8 +5,8 @@ apply plugin: 'maven-publish'
 //region Publish to jCenter
 def libGroupId = 'com.oscarcreator'
 def libArtifactId = 'roundsideprogressbar'
-def libVersion = '0.1.3'
-def libDesc = 'Android library for a roundsided progressbar.'
+def libVersion = '1.1.0'
+def libDesc = 'Android library for roundsided progressbars.'
 def libLicenses = ['MIT']
 def libVCSUrl = 'https://github.com/OscarCreator/Android-RoundSideProgressBar.git'
 

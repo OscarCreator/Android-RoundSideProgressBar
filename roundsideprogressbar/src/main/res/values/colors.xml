@@ -4,5 +4,6 @@
     <color name="defaultOutlineColor">#949494</color>
     <color name="defaultProgressColor">#29B6F6</color>
     <color name="defaultProgressBackgroundColor">#C5C3C3</color>
+    <color name="defaultDividerColor">#757575</color>
 
 </resources>
