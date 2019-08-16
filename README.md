@@ -1,4 +1,5 @@
-
+[![API](https://img.shields.io/badge/API-18%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=18)
+[![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html)
 [ ![Download](https://api.bintray.com/packages/oscarcreator/RoundSideProgressBar/com.oscarcreator%3Aroundsideprogressbar/images/download.svg) ](https://bintray.com/oscarcreator/RoundSideProgressBar/com.oscarcreator%3Aroundsideprogressbar/_latestVersion)
 # Android-RoundSideProgressBar
 
