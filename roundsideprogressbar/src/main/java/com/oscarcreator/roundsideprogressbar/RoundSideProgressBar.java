@@ -177,7 +177,7 @@ public class RoundSideProgressBar extends View {
     public void setOutlineWidth(float newOutlineWidth) {
         if (getOutlineWidth() != newOutlineWidth) {
             this.outlineWidth = newOutlineWidth;
-            this.invalidate();
+            this.requestLayout();
         }
     }
 
@@ -270,7 +270,7 @@ public class RoundSideProgressBar extends View {
         if (this.orientation != newOrientation &&
                 (newOrientation == CONSTANT_HORIZONTAL | newOrientation == CONSTANT_VERTICAL)){
             this.orientation = newOrientation;
-            this.invalidate();
+            this.requestLayout();
 
         }
     }
@@ -318,7 +318,6 @@ public class RoundSideProgressBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
 
         rectView.left = getPaddingLeft() + outlineWidth;
         rectView.top = getPaddingTop() + outlineWidth;
