@@ -67,7 +67,7 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
 
         } else {
             Path p = composeRoundedRect(rectView, CONSTANT_VERTICAL);
-
+            //TODO make the dividers draw at vertical
 
         }
 
@@ -100,5 +100,29 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
 
 
 
+    }
+
+    public void setDividers(int dividers){
+        this.dividers = dividers;
+    }
+
+    public void setDividerWidth(float width){
+        this.dividerWidth = width;
+    }
+
+    public void setDividerColor(int color){
+        dividerPaint.setColor(color);
+    }
+
+    public int getDividers() {
+        return dividers;
+    }
+
+    public float getDividerWidth() {
+        return dividerWidth;
+    }
+
+    public int getDividerColor() {
+        return dividerColor;
     }
 }
