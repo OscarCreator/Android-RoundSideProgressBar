@@ -6,6 +6,4 @@
         <attr name="dividerWidth" format="dimension"/>
 
     </declare-styleable>
-
-
 </resources>

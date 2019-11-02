@@ -35,24 +35,17 @@
 
     <com.oscarcreator.roundsideprogressbar.DividedRoundSideProgressBar
         android:id="@+id/drspb1"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="150dp"
         android:layout_above="@id/lpb1"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        app:dividers="4"
+        app:dividers="3"
         app:dividerWidth="5dp"
         app:outlineWidth="7dp"
-        app:progress="10"/>
+        app:progress="10"
+        app:orientation="vertical"/>
 
-
-    <android.support.v7.widget.AppCompatSeekBar
-        android:id="@+id/sb"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/lpb1"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"/>
 
     <com.oscarcreator.roundsideprogressbar.RoundSideProgressBar
         android:id="@+id/lpb1"
@@ -64,6 +57,23 @@
         app:outlineWidth="7dp"
         app:progress="10"
         />
+
+    <TextView
+        android:layout_below="@id/lpb1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Progress"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"/>
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/sb"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/lpb1"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"/>
 
 
 </RelativeLayout>

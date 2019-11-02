@@ -27,7 +27,6 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
 
     protected float dividerWidth;
 
-    private List<Integer> dividerPos = new ArrayList<>();
 
     public DividedRoundSideProgressBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -42,6 +41,69 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
     public DividedRoundSideProgressBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
+    }
+
+
+    /**
+     * Set's the quantity of dividers on the progressbar.
+     *
+     * @param dividers quantity of dividers
+     * */
+    public void setDividers(int dividers){
+        this.dividers = dividers;
+        this.invalidate();
+    }
+
+
+    /**
+     * Set's the width of the dividers on the progressbar.
+     *
+     * @param width the width of the dividers
+     * */
+    public void setDividerWidth(float width){
+        this.dividerWidth = width;
+        this.invalidate();
+    }
+
+
+    /**
+     * Set's the color of the dividers
+     *
+     * @param color the color for the dividers
+     * */
+    public void setDividerColor(int color){
+        dividerPaint.setColor(color);
+        this.invalidate();
+    }
+
+
+    /**
+     * Returns the quantity of dividers currently using.
+     *
+     * @return quantity of dividers
+     * */
+    public int getDividers() {
+        return dividers;
+    }
+
+
+    /**
+     * Returns the width of the current dividers.
+     *
+     * @return width of the dividers
+     * */
+    public float getDividerWidth() {
+        return dividerWidth;
+    }
+
+
+    /**
+     * Returns the color of the dividers.
+     *
+     * @return color of dividers
+     * */
+    public int getDividerColor() {
+        return dividerColor;
     }
 
 
@@ -67,11 +129,17 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
 
         } else {
             Path p = composeRoundedRect(rectView, CONSTANT_VERTICAL);
-            //TODO make the dividers draw at vertical
 
-
+            float spacing = (viewHeight - (dividerWidth * dividers)) / (dividers + 1);
+            for (int i = 1; i <= dividers; i++){
+                float y = rectView.top + spacing * i + (dividerWidth * (i - 1));
+                canvas.save();
+                canvas.clipRect(rectView.left, y,
+                        rectView.right, y + dividerWidth);
+                canvas.drawPath(p, dividerPaint);
+                canvas.restore();
+            }
         }
-
 
     }
 
@@ -99,31 +167,5 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
         dividerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         dividerPaint.setColor(dividerColor);
 
-
-
-    }
-
-    public void setDividers(int dividers){
-        this.dividers = dividers;
-    }
-
-    public void setDividerWidth(float width){
-        this.dividerWidth = width;
-    }
-
-    public void setDividerColor(int color){
-        dividerPaint.setColor(color);
-    }
-
-    public int getDividers() {
-        return dividers;
-    }
-
-    public float getDividerWidth() {
-        return dividerWidth;
-    }
-
-    public int getDividerColor() {
-        return dividerColor;
     }
 }

@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
         RoundSideProgressBar rspb = findViewById(R.id.lpb1);
         DividedRoundSideProgressBar drspb = findViewById(R.id.drspb1);
+
         SeekBar sb = findViewById(R.id.sb);
 
         Button btn_10 = findViewById(R.id.btn_10);

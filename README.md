@@ -11,7 +11,7 @@ This progressbar has round sides with fully customizable sizes and colors.
 ```java
 dependencies {
     ...
-    implementation 'com.oscarcreator:roundsideprogressbar:1.3.0'
+    implementation 'com.oscarcreator:roundsideprogressbar:1.3.1'
 }
 ```
 
@@ -20,7 +20,7 @@ dependencies {
 <dependency>
   <groupId>com.oscarcreator</groupId>
   <artifactId>roundsideprogressbar</artifactId>
-  <version>1.3.0</version>
+  <version>1.3.1</version>
   <type>pom</type>
 </dependency>
 ```
