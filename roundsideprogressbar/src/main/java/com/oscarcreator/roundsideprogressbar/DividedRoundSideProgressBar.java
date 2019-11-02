@@ -69,6 +69,7 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
             Path p = composeRoundedRect(rectView, CONSTANT_VERTICAL);
             //TODO make the dividers draw at vertical
 
+
         }
 
 
