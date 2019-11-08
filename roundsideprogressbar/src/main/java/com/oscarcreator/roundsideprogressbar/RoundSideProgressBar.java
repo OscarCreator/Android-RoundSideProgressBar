@@ -33,8 +33,6 @@ public class RoundSideProgressBar extends View {
     protected static final int DEFAULT_BACKGROUND_COLOR_ID = R.color.defaultOutlineColor;
     protected static final int DEFAULT_PROGRESS_BACKGROUND_COLOR_ID = R.color.defaultProgressBackgroundColor;
 
-    protected static final int DEFAULT_MAX_PROGRESS = 100;
-    protected static final int DEFAULT_PROGRESS = 0;
 
     protected static final long DEFAULT_ANIMATION_SPEED = 1500;
 
@@ -54,7 +52,7 @@ public class RoundSideProgressBar extends View {
 
     private float maxProgress, progress;
 
-
+    /**{@link com.oscarcreator.roundsideprogressbar.R.attr#outlineWidth}*/
     private int orientation;
 
     private long animationSpeed = DEFAULT_ANIMATION_SPEED;
@@ -271,7 +269,6 @@ public class RoundSideProgressBar extends View {
                 (newOrientation == CONSTANT_HORIZONTAL | newOrientation == CONSTANT_VERTICAL)){
             this.orientation = newOrientation;
             this.requestLayout();
-
         }
     }
 
@@ -288,7 +285,7 @@ public class RoundSideProgressBar extends View {
 
 
     /**
-     * The time from 0% to 100% of the progressbar in milliseconds.
+     * The time from 0% to 100% of the progressbar animation in milliseconds.
      * Default value is {@link #DEFAULT_ANIMATION_SPEED}
      *
      * @param millis the new animation speed
@@ -479,21 +476,18 @@ public class RoundSideProgressBar extends View {
     protected void init(Context context, AttributeSet attrs) {
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs,
-                R.styleable.RoundSideProgressBar, 0, 0);
+                R.styleable.RoundSideProgressBar, R.attr.roundSideProgressBarStyle, R.style.RoundSideProgressBar);
 
         try {
-            maxProgress = typedArray.getFloat(R.styleable.RoundSideProgressBar_maxProgress,
-                    DEFAULT_MAX_PROGRESS);
-            if (maxProgress <= 0){
-                throw new IllegalArgumentException("maxProgress is not allowed to be negative or have a value of zero. " +
-                        "Current value: " + maxProgress);
-            }
 
-            progress = typedArray.getFloat(R.styleable.RoundSideProgressBar_progress, DEFAULT_PROGRESS);
-            if (maxProgress < 0){
-                throw new IllegalArgumentException("progress is not allowed to have a negative value. " +
-                        "Current value: " + progress);
-            }
+            maxProgress = typedArray.getFloat(R.styleable.RoundSideProgressBar_maxProgress,
+                    context.getResources().getInteger(R.integer.defMaxProgress));
+            checkValidMaxProgress(maxProgress);
+
+            progress = typedArray.getFloat(R.styleable.RoundSideProgressBar_progress,
+                    context.getResources().getInteger(R.integer.defProgress));
+            checkValidProgress(progress);
+
 
             progressColor = typedArray.getColor(R.styleable.RoundSideProgressBar_progressColor,
                     ContextCompat.getColor(context, DEFAULT_PROGRESS_COLOR_ID));
@@ -502,9 +496,14 @@ public class RoundSideProgressBar extends View {
             progressBackgroundColor = typedArray.getColor(R.styleable.RoundSideProgressBar_progressBackgroundColor,
                     ContextCompat.getColor(context, DEFAULT_PROGRESS_BACKGROUND_COLOR_ID));
 
-            outlineWidth = typedArray.getDimension(R.styleable.RoundSideProgressBar_outlineWidth, DEFAULT_PADDING);
 
-            orientation = typedArray.getInt(R.styleable.RoundSideProgressBar_orientation, CONSTANT_HORIZONTAL);
+            outlineWidth = typedArray.getDimension(R.styleable.RoundSideProgressBar_outlineWidth,
+                    context.getResources().getDimension(R.dimen.defOutlineWidth));
+            checkValidOutlineWidth(outlineWidth);
+
+            orientation = typedArray.getInt(R.styleable.RoundSideProgressBar_orientation,
+                    context.getResources().getInteger(R.integer.horizontalConst));
+            checkValidOrientation(orientation);
 
         } finally {
             typedArray.recycle();
@@ -547,6 +546,39 @@ public class RoundSideProgressBar extends View {
 
         p.close();
         return p;
+    }
+
+    private boolean checkValidMaxProgress(float value){
+        if (value <= 0){
+            throw new IllegalArgumentException("maxProgress is not allowed to be negative or have a value of zero. " +
+                    "Current value: " + value);
+        }
+        return true;
+    }
+
+    private boolean checkValidProgress(float value){
+        if (value < 0){
+            throw new IllegalArgumentException("progress is not allowed to have a negative value. " +
+                    "Current value: " + value);
+        }
+        return true;
+    }
+
+    private boolean checkValidOutlineWidth(float value){
+        if (value < 0){
+            throw new IllegalArgumentException("dividerWidth is not allowed to have a negative value. " +
+                    "Current value: " + value);
+        }
+        return true;
+    }
+
+    private boolean checkValidOrientation(int value){
+        if (value != 0 && value != 1){
+            throw new IllegalArgumentException("orientation is only allowed to have a value of \"vertical\"" +
+                    " or \"horizontal\". " +
+                    "Current value: " + value);
+        }
+        return true;
     }
 
 

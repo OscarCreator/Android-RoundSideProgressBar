@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="defMaxProgress">100</integer>
+    <integer name="defProgress">0</integer>
+
+    <dimen name="defOutlineWidth">10dp</dimen>
+
+    <integer name="defDividers">3</integer>
+    <dimen name="defDividerWidth">5dp</dimen>
+
+    <integer name="horizontalConst">0</integer>
+    <integer name="verticalConst">1</integer>
+
+</resources>

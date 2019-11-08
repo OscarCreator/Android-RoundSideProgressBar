@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--The base theme for RoundSideProgressBar-->
+    <style name="RoundSideProgressBar">
+        <item name="progress">@integer/defProgress</item>
+        <item name="maxProgress">@integer/defMaxProgress</item>
+        <item name="outlineWidth">@dimen/defOutlineWidth</item>
+
+        <item name="outlineColor">@color/defaultOutlineColor</item>
+        <item name="progressColor">@color/defaultProgressColor</item>
+        <item name="progressBackgroundColor">@color/defaultProgressBackgroundColor</item>
+        <item name="orientation">horizontal</item>
+    </style>
+
+    <!--The base theme for DividedRoundSideProgressBar-->
+    <style name="DividedRoundSideProgressBar" parent="RoundSideProgressBar">
+        <item name="dividers">@integer/defDividers</item>
+        <item name="dividerColor">@color/defaultDividerColor</item>
+        <item name="dividerWidth">@dimen/defDividerWidth</item>
+    </style>
+
+</resources>

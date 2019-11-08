@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundSideProgressBar">
+        <!--This is the max progress for {@link com.oscarcreator.roundsideprogressbar.RoundSideProgressBar}.
+            The value of maxProgress is inclusive.-->
+        <attr name="maxProgress" format="float"/>
+        <!--This is the current progress value for {@link com.oscarcreator.roundsideprogressbar.RoundSideProgressBar}.
+            This should be between 0 and maxProgress{@link com.oscarcreator.roundsiderprogressbar.R.attrs#maxProgress}-->
+        <attr name="progress" format="float"/>
+        <!--Outline color of the {@link com.oscarcreator.roundsideprogressbar.RoundSideProgressBar}.-->
+        <attr name="outlineColor" format="color"/>
+        <!--The color which is drawn form 0 to progress.-->
+        <attr name="progressColor" format="color"/>
+        <!--The color drawn from current progress to max progress.-->
+        <attr name="progressBackgroundColor" format="color"/>
+
+        <!--Width of the outline around the progressbar.-->
+        <attr name="outlineWidth" format="dimension"/>
+
+        <!--Orientation of the progressbar.-->
+        <attr name="orientation" format="enum">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+
+    </declare-styleable>
+
+    <!--The style of {@link com.oscarcreator.roundsideprogressbar.RoundSideProgressBar}.
+        Apply a style which has a parent style of "RoundSideProgressBar".-->
+    <attr name="roundSideProgressBarStyle"/>
+
+    <declare-styleable name="DividedRoundSideProgressBar">
+        <!--The quantity of dividers shown on top of the progress.-->
+        <attr name="dividers" format="integer"/>
+        <!--The color of the dividers-->
+        <attr name="dividerColor" format="color"/>
+        <!--The width of the dividers-->
+        <attr name="dividerWidth" format="dimension"/>
+
+    </declare-styleable>
+
+    <!--The style of {@link com.oscarcreator.roundsideprogressbar.DividedRoundSideProgressBar}.
+        Apply a style which has a parent style of "DividedRoundSideProgressBar".-->
+    <attr name="dividedRoundSideProgressBarStyle"/>
+
+</resources>

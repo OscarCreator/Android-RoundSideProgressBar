@@ -15,14 +15,10 @@ import java.util.List;
 
 public class DividedRoundSideProgressBar extends RoundSideProgressBar {
 
-    protected static final int DEFAULT_DIVIDER_QUANTITY = 2;
-    protected static final float DEFAULT_DIVIDERS_WIDTH = 10;
     protected static final int DEFAULT_DIVIDER_COLOR_ID = R.color.defaultDividerColor;
-
 
     protected int dividers;
 
-    protected int dividerColor;
     protected Paint dividerPaint;
 
     protected float dividerWidth;
@@ -50,8 +46,10 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
      * @param dividers quantity of dividers
      * */
     public void setDividers(int dividers){
-        this.dividers = dividers;
-        this.invalidate();
+        if (dividers != this.dividers){
+            this.dividers = dividers;
+            this.invalidate();
+        }
     }
 
 
@@ -61,8 +59,10 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
      * @param width the width of the dividers
      * */
     public void setDividerWidth(float width){
-        this.dividerWidth = width;
-        this.invalidate();
+        if (width != dividerWidth){
+            this.dividerWidth = width;
+            this.invalidate();
+        }
     }
 
 
@@ -72,8 +72,10 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
      * @param color the color for the dividers
      * */
     public void setDividerColor(int color){
-        dividerPaint.setColor(color);
-        this.invalidate();
+        if (color != dividerPaint.getColor()){
+            dividerPaint.setColor(color);
+            this.invalidate();
+        }
     }
 
 
@@ -103,7 +105,7 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
      * @return color of dividers
      * */
     public int getDividerColor() {
-        return dividerColor;
+        return dividerPaint.getColor();
     }
 
 
@@ -148,15 +150,18 @@ public class DividedRoundSideProgressBar extends RoundSideProgressBar {
         super.init(context, attrs);
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs,
-                R.styleable.DividedRoundSideProgressBar, 0, 0);
+                R.styleable.DividedRoundSideProgressBar,
+                R.attr.dividedRoundSideProgressBarStyle,
+                R.style.DividedRoundSideProgressBar);
+        int dividerColor;
         try {
 
 
             dividers = typedArray.getInteger(R.styleable.DividedRoundSideProgressBar_dividers,
-                    DEFAULT_DIVIDER_QUANTITY);
+                    context.getResources().getInteger(R.integer.defDividers));
 
             dividerWidth = typedArray.getDimension(R.styleable.DividedRoundSideProgressBar_dividerWidth,
-                    DEFAULT_DIVIDERS_WIDTH);
+                    context.getResources().getDimension(R.dimen.defDividerWidth));
 
             dividerColor = typedArray.getColor(R.styleable.DividedRoundSideProgressBar_dividerColor,
                     ContextCompat.getColor(context, DEFAULT_DIVIDER_COLOR_ID));
