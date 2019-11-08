@@ -6,6 +6,20 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="roundSideProgressBarStyle">@style/customRoundSideProgressBarStyle</item>
+        <item name="dividedRoundSideProgressBarStyle">@style/customDRSPBS</item>
+
     </style>
+
+    <style name="customRoundSideProgressBarStyle" parent="RoundSideProgressBar">
+        <item name="outlineWidth">8dp</item>
+    </style>
+
+    <style name="customDRSPBS" parent="DividedRoundSideProgressBar">
+        <item name="dividers">5</item>
+        <item name="dividerWidth">3dp</item>
+    </style>
+
+
 
 </resources>
