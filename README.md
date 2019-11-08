@@ -8,10 +8,10 @@ Round sided progressbar library for Android.
 This progressbar has round sides with fully customizable sizes and colors. 
 
 ### Gradle
-```java
+```groovy
 dependencies {
     ...
-    implementation 'com.oscarcreator:roundsideprogressbar:1.3.1'
+    implementation 'com.oscarcreator:roundsideprogressbar:1.4.0'
 }
 ```
 
@@ -20,7 +20,7 @@ dependencies {
 <dependency>
   <groupId>com.oscarcreator</groupId>
   <artifactId>roundsideprogressbar</artifactId>
-  <version>1.3.1</version>
+  <version>1.4.0</version>
   <type>pom</type>
 </dependency>
 ```
